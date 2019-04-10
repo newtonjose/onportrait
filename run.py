@@ -1,4 +1,7 @@
 from onportrait import app
+import logging
+
+logging.getLogger('onportrait').setLevel(logging.DEBUG)
 
 app.config.from_object('config.DevelopmentConfig')
 
