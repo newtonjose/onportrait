@@ -1,7 +1,10 @@
 # python binaries
 *.pyc
 __pycache__/
-
+venv/
 
 # pycharm files
 *idea/
+
+# emacs
+*.py~

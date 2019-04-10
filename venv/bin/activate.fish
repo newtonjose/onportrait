@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/newtonjose/Development/pycode/src/newtonjose/onportrait/venv"
+set -gx VIRTUAL_ENV "/home/manjaro/Documents/git/onportrait/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

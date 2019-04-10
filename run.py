@@ -1,7 +1,6 @@
-from onportrait import create_app
-from onportrait.index import index
+from onportrait import app
 
-app = create_app('config.DevelopmentConfig')
+app.config.from_object('config.DevelopmentConfig')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port='5000')

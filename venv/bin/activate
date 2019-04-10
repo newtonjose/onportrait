@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/newtonjose/Development/pycode/src/newtonjose/onportrait/venv"
+VIRTUAL_ENV="/home/manjaro/Documents/git/onportrait/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
