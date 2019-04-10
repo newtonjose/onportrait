@@ -1,3 +1,6 @@
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+UPLOAD_FOLDER = './files/uploads'
+
 class BaseCongig(object):
     DEBUG = True
     TESTING = False
