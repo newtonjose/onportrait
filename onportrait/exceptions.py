@@ -3,3 +3,6 @@ class ImageProcessFailedError(Exception):
 
 class ImageUploadError(Exception):
     pass
+
+class PortraitNotFound(Exception):
+    pass

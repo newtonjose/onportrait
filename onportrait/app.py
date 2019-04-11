@@ -20,7 +20,7 @@ add_portrait_blueprint = Blueprint('add_portrait', __name__)
 
 @upload_blueprint.errorhandler(500)
 def internal_exception_handler(error):
-    app.logger.error(error)
+    logger.error(error)
     return jsonify({'errors': {'internal_error': [str(error)]}}), 500
 
 
@@ -64,7 +64,7 @@ def upload():
             filepath = os.path.join(UPLOAD_FOLDER, filename)
             file.save(os.path.join(filepath))
         except Exception as e:
-            app.logger.error("Error: {0}".format(e))
+            logger.error("Error: {0}".format(e))
             raise internal_exception_handler("error to save image!")
 
         # se não error, processar imagem usando opencv
@@ -72,7 +72,7 @@ def upload():
         try:
             faces = ft.image_process(filepath)
         except Exception as e:
-            app.logger.error("Error: {0}".format(e))
+            logger.error("Error: {0}".format(e))
             raise internal_exception_handler("process image failed")
 
         # TODO: return image id (string) unique
@@ -100,6 +100,6 @@ def add_portrait(id):
     except Exception as e:
         pass
 
-    app.logger.info("{}, {}".format(name, social_media))
+    logger.info("{}, {}".format(name, social_media))
 
     return "", 405

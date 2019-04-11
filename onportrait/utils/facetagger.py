@@ -3,7 +3,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class FaceTagger():
+
+class FaceTagger:
     def __init__(self,
                  casc_path="./files/haarcascade_frontalface_default.xml"):
         self.casc_path = casc_path
@@ -40,8 +41,8 @@ class FaceTagger():
             faces_list.append({
                 'x': int(f[0]),
                 'y': int(f[1]),
-                'h': int(f[2]),
-                'l': int(f[3]),
+                'hight': int(f[2]),
+                'leght': int(f[3]),
              },)
 
         logger.error(

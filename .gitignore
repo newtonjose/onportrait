@@ -9,6 +9,7 @@ venv/
 # emacs
 *.py~
 
+
 # ref.
 # https://github.com/sepro/MemoBoard/blob/master/memoboard/models.py
 # https://github.com/dternyak/React-Redux-Flask/blob/master/application/models.py

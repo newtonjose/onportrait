@@ -14,6 +14,7 @@ from onportrait.utils.serialize import serialize
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 UPLOAD_FOLDER = './files/uploads'
+logger = app.logger
 
 index_blueprint = Blueprint('index', __name__)
 upload_blueprint = Blueprint('upload', __name__)
@@ -24,7 +25,7 @@ get_portrait_blueprint = Blueprint('get_portrait', __name__)
 
 @upload_blueprint.errorhandler(500)
 def internal_exception_handler(error):
-    app.logger.error(error)
+    logger.error(error)
     return jsonify({'errors': {'internal_error': [str(error)]}}), 500
 
 
@@ -33,6 +34,11 @@ def image_upload_exception_handler(error):
     return jsonify(
         {'errors': {'file_error': ['error on uploading image']}}), 422
 
+@get_portrait_blueprint.errorhandler(PortraitNotFound)
+def get_portrait_exception_handler(error):
+    return jsonify(
+        {'errors': {'not_found_error':
+                    ['portrait not found on the database']}}), 404
 
 @index_blueprint.route("/", methods=["GET"])
 def index():
@@ -44,7 +50,7 @@ def _allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@upload_blueprint.route("/upload", methods=["POST"])
+@upload_blueprint.route("/api/upload", methods=["POST"])
 def upload():
     """
     From request get the file and save on UPLOAD_FOLDER, create a referency
@@ -54,36 +60,39 @@ def upload():
     """
 
     # salvar imagem local ou no db
-    if 'file' not in request.files:
+    if 'image_file' not in request.files:
+        logger.debug(request.files)
         raise ImageUploadError
 
-    file = request.files['file']
-    if file.filename == '':
+    logger.debug(request.files)
+    image_file = request.files['image_file']
+    if image_file.filename == '':
         raise ImageUploadError
 
-    if file and _allowed_file(file.filename):
+    if image_file and _allowed_file(image_file.filename):
         try:
-            filename = secure_filename(file.filename)
+            filename = secure_filename(image_file.filename)
             filepath = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(os.path.join(filepath))
+            image_file.save(os.path.join(filepath))
         except Exception as e:
             raise internal_exception_handler("error to save image!")
-
-        # salvar imagem no db
-        try:
-            pt = Portrait.add(file_name=filename)
-            app.logger.info("{}".format(pt.id))
-        except Exception as e:
-            app.logger.error(e)
-            raise internal_exception_handler("error to save image ref on db!")
 
         # se não error, processar imagem usando opencv
         ft = FaceTagger()
         try:
             faces = ft.image_process(filepath)
         except Exception as e:
-            app.logger.error("Error: {0}".format(e))
+            logger.error("Error: {0}".format(e))
             raise internal_exception_handler("process image failed")
+
+        # salvar imagem no db
+        try:
+            pt = Portrait.add(file_name=filename, faces_coods=faces)
+            logger.info("{}".format(pt.id))
+        except Exception as e:
+            logger.error(e)
+            raise internal_exception_handler(
+                "error to save image ref on db!")
 
         # TODO: return image id (string) unique
         return jsonify({'data': {'id': pt.id, 'faces': faces}}), 200
@@ -94,7 +103,7 @@ def upload():
                                                 ALLOWED_EXTENSIONS)]}}), 422
 
 
-@add_portrait_blueprint.route("/add/portrait/<int:image_id>", methods=["PUT"])
+@add_portrait_blueprint.route("/api/add/portrait/<int:image_id>", methods=["PUT"])
 def add_portrait(image_id):
     """
     Get infos of portrait and save on database
@@ -108,7 +117,7 @@ def add_portrait(image_id):
     try:
         Portrait.update(id=image_id, name=name, social_media=instagram)
     except Exception as e:
-        app.logger.error(e)
+        logger.error(e)
         raise internal_exception_handler("error to update image ref on db!")
 
     return "", 200
@@ -118,14 +127,14 @@ def _get_portrait(id):
     try:
         pt = Portrait.query.get(id)
     except Exception as e:
-        app.logger.error(e)
+        logger.error(e)
         raise internal_exception_handler("error to update image ref on db!")
 
     return pt
 
 
 # return image infos: face_coods, name, social_media, image file
-@get_portrait_image_blueprint.route("/get/portrait/image/<int:image_id>",
+@get_portrait_image_blueprint.route("/api/get/portrait/image/<int:image_id>",
                                     methods=["GET"])
 def get_portrait_image(image_id):
     """
@@ -143,17 +152,22 @@ def get_portrait_image(image_id):
                 mimetype='image/jpg'
             )
     except Exception as e:
-        app.logger.error(e)
+        logger.error(e)
         raise internal_exception_handler("error to open image on db!")
 
 
-@get_portrait_blueprint.route("/get/portrait/<int:image_id>",
+@get_portrait_blueprint.route("/api/get/portrait/<int:image_id>",
                               methods=["GET"])
 def get_portrait(image_id):
+    """
+
+    :param image_id:
+    :return:
+    """
     pt = _get_portrait(image_id)
 
-    app.logger.info(pt.name)
-
-    return jsonify({'data': {'name': pt.name,
-                             'instagram': pt.social_media}}), 200
-
+    if pt:
+        return jsonify({'data': {'faces': pt.faces_coods, 'name': pt.name,
+                                 'instagram': pt.social_media}}), 200
+    else:
+        raise PortraitNotFound
