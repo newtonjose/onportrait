@@ -7,5 +7,16 @@ class Portrait(db.Model):
     social_media = db.Column(db.String(255), unique=True)
     name = db.Column(db.String(255))
 
-    def __init__(self, id):
-        self.id = id
+    def __repr__(self):
+        return '<Portrait {} {} {}>'.format(self.id, self.social_media,
+                                            self.name)
+
+    @staticmethod
+    def add(*args, **kwargs):
+        new_portrait = Portrait(*args, **kwargs)
+
+        print(new_portrait)
+        db.session.add(new_portrait)
+        db.session.commit()
+
+        return new_portrait

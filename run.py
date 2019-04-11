@@ -1,17 +1,29 @@
-from onportrait.app import app
-from onportrait.app import index_blueprint
-from onportrait.app import upload_blueprint
-from onportrait.app import add_portrait_blueprint
-import logging
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+"""
+Python Aplication Template
+Licence: GPLv3
+"""
+import os
+from onportrait import app
 
-logging.getLogger('onportrait').setLevel(logging.DEBUG)
+@app.cli.command()
+def createdb():
+    """
+    initi database and migration information
+    """
+    SQLALCHEMY_DATABASE_URI = app.config['SQLALCHEMY_DATABASE_URI']
 
-app.config.from_object('config.DevelopmentConfig')
+    if SQLALCHEMY_DATABASE_URI.startswith('sqlite:///'):
+        path = os.path.dirname(os.path.realpath
+                               (SQLALCHEMY_DATABASE_URI.replace(
+                                   'sqlite:///', '')))
+        if not os.path.exists(path):
+            os.makedirs(path)
 
-# register the blueprints
-app.register_blueprint(index_blueprint)
-app.register_blueprint(upload_blueprint)
-app.register_blueprint(add_portrait_blueprint)
+    db.create_all(app=app)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='5000')
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+    

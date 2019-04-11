@@ -1,0 +1,4 @@
+### Curl Requests
+
+# get all portraits
+curl localhost:5000/my/portraits
