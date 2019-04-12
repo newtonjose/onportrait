@@ -42,7 +42,7 @@ def get_portrait_exception_handler(error):
 
 @index_blueprint.route("/", methods=["GET"])
 def index():
-    return render_template('index2.html')
+    return render_template('index.html')
 
 
 def _allowed_file(filename):

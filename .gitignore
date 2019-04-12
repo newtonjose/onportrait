@@ -13,3 +13,7 @@ venv/
 # ref.
 # https://github.com/sepro/MemoBoard/blob/master/memoboard/models.py
 # https://github.com/dternyak/React-Redux-Flask/blob/master/application/models.py
+# https://developer.okta.com/blog/2018/12/20/crud-app-with-python-flask-react#define-your-rest-api-endpoints
+# https://material-ui.com/demos/buttons/#contained-buttons
+
+*.save*
