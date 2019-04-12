@@ -33,7 +33,7 @@ def image_upload_exception_handler(error):
 
 @index_blueprint.route("/", methods=["GET"])
 def index():
-    return render_template('index.html')
+    return render_template('index2.html')
 
 
 def _allowed_file(filename):
