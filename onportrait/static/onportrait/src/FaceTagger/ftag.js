@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 //import {Row} from 'react-bootstrap'
-import arnold from "../the_terminator_still.jpg";;
+import arnold from "../ImageNav/Atons/the_terminator_still.jpg";;
 
 class TagImg extends Component {
   constructor(props){

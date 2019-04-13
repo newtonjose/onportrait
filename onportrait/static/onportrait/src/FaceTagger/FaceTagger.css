@@ -1,21 +1,16 @@
 .Face-Tagger {
-  text-align: center;
-   position: relative;
-}
-
-.canvas {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    border: 2px solid red;
 }
 
-.form {
-    text-align: center;
-    position: absolute;
+.Face-Form {
+    position: fixed;
+    margin-left: 325px;
 }
 
-.image {
-    width: 500;
-    height: 600;
+.Input-Tagger {
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+
 }
