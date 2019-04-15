@@ -45,11 +45,11 @@ curl -i -X POST -H "Content-Type: multipart/form-data"
 ```
 
 ### Get an image tagged
-Send a image binnay with the face identified.
+Send a image binnary with the face identified.
 
 - *URL*
 ```
-PUT /api/get/portrait/image/<int:image_id>
+GET /api/get/portrait/image/<int:image_id>
 ```
 - *Data Params*
 
