@@ -44,16 +44,16 @@ curl -i -X POST -H "Content-Type: multipart/form-data"
 -F "file=/path/to/image" http://0.0.0.0/api/upload/
 ```
 
-### Save an image tagged
-Send a json with the face identified, a tagger name.
+### Get an image tagged
+Send a image binnay with the face identified.
 
 - *URL*
 ```
-PUT /api/add/portrait/<int:image_id>
+PUT /api/get/portrait/image/<int:image_id>
 ```
 - *Data Params*
 
-> - Json: {name: test}
+> - url image id
 
 - *Success Response*:
 
