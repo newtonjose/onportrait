@@ -3,5 +3,9 @@ opencv-python
 opencv-contrib-python
 Werkzeug==0.15.2
 flask_sqlalchemy==2.3.2
+<<<<<<< HEAD
 Werkzeug==0.15.2
 python-resize-image==1.1.18
+=======
+python-resize-image
+>>>>>>> 5f184732a892ad5df64615c4216930d8f3abdc11
