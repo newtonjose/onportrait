@@ -1,20 +1,34 @@
 import cv2
 import logging
+from PIL import Image
+from resizeimage import resizeimage
 
 logger = logging.getLogger(__name__)
+UPLOAD_FOLDER = './files/uploads'
 
 
 class FaceTagger:
     def __init__(self,
                  casc_path="./files/haarcascade_frontalface_default.xml"):
+
         self.casc_path = casc_path
         self.faceCasc = cv2.CascadeClassifier(casc_path)
+
+    @staticmethod
+    def _resize_image(image_path):
+
+        with open(image_path, 'r+b') as f:
+            with Image.open(f) as image:
+                cover = resizeimage.resize_cover(image, [700, 400])
+                cover.save(image_path, image.format)
 
     def image_process(self, image_path):
         """
         process image and return faces coordens
         :return:
         """
+
+        self._resize_image(image_path)
 
         image = cv2.imread(image_path)
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -27,7 +41,6 @@ class FaceTagger:
             flags=cv2.CASCADE_SCALE_IMAGE
         )
 
-
         # for (x, y, w, h) in faces:
         #     cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
         #
@@ -39,12 +52,13 @@ class FaceTagger:
         for i in range(len(faces)):
             f = faces[i]
             faces_list.append({
-                'x': int(f[0]),
-                'y': int(f[1]),
-                'hight': int(f[2]),
-                'leght': int(f[3]),
-             },)
+                'x': int(f[1]),
+                'y': int(f[0]),
+                'width': int(f[2]),
+                'height': int(f[3])
+             })
 
-        logger.error(
-            "Found {0} faces at coords {1}!".format(len(faces), faces_list))
+        if not faces_list:
+            raise Exception("NotFound faces on Image!")
+
         return faces_list
