@@ -139,17 +139,21 @@ def get_portrait_image(image_id):
     :return:
     """
     pt = _get_portrait(image_id)
-    image_path = os.path.join(UPLOAD_FOLDER, '{}'.format(pt.file_name))
-    try:
-        with open(image_path, 'rb') as image:
-            return send_file(
-                io.BytesIO(image.read()),
-                attachment_filename='{}.jpeg'.format(pt.file_name),
-                mimetype='image/jpg'
-            )
-    except Exception as e:
-        logger.error(e)
-        raise internal_exception_handler("error to open image on db!")
+    if pt:
+        image_path = os.path.join(UPLOAD_FOLDER, '{}'.format(pt.file_name))
+        try:
+            with open(image_path, 'rb') as image:
+                return send_file(
+                    io.BytesIO(image.read()),
+                    attachment_filename='{}.jpeg'.format(pt.file_name),
+                    mimetype='image/jpg'
+                )
+        except Exception as e:
+            logger.error(e)
+            return internal_exception_handler("error to open image on db!")
+
+    else:
+        return PortraitNotFound
 
 
 @get_portrait_blueprint.route("/api/get/portrait/<int:image_id>",

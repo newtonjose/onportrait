@@ -1,4 +1,4 @@
-python:3.7-alpine
+FROM python:3.7-alpine
 
 WORKDIR /usr/src/app
 
@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 RUN python ./db_config.py
-CMD ["python", "./db_config.py"; "python", "./run.py"]
+CMD ["python3.7", "./db_config.py"; "python3.7", "./run.py"]
