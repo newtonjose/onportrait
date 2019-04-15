@@ -6,6 +6,7 @@ import Bar from './Atons/UploadBar'
 import FaceTagger from "../FaceTagger";
 import NameForm from '../FaceTagger/NameForm';
 import LaddaButton, { XL, EXPAND_RIGHT } from 'react-ladda';
+import Button from '@material-ui/core/Button';
 
 import './main.css'
 
@@ -15,12 +16,14 @@ class ImageNav extends React.Component {
     super(props);
     this.state ={
       file:null,
-      image: []
+      image: [],
+      image_id: null
     };
 
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
     this.fileUpload = this.fileUpload.bind(this);
+    this.viewImage = this.viewImage(this);
   }
 
   onFormSubmit(e){
@@ -28,19 +31,21 @@ class ImageNav extends React.Component {
     this.fileUpload(this.state.file).then(response => {
       //console.debug()
       const image = response.data['data']['faces'];
+      const image_id = response.data['data']['id'];
       // console.log(image);
       this.setState({image});
+      this.setState({image_id});
     });
-    this.image = (
-        <div className="container">
-            <Image/>
-            <FaceTagger facetagger={this.state.image}></FaceTagger>
-        </div>
-    )
   }
 
   onChange(e) {
     this.setState({file:e.target.files[0]})
+    this.image = (
+     <div className="container">
+            <Image/>
+            <FaceTagger facetagger={this.state.image}></FaceTagger>
+        </div>
+    )
   }
 
   fileUpload(file){
@@ -51,7 +56,7 @@ class ImageNav extends React.Component {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
-    }
+    };
     return  post(url, formData,config)
   }
 
@@ -63,8 +68,10 @@ class ImageNav extends React.Component {
         <input type="file" onChange={this.onChange} />
         <button type="submit">Upload</button>
         </form>
-      {this.image}
+          {this.image}
+          {/*<img src={arnold} alt="Logo" />*/}
         </div>
+
    )
   }
 }

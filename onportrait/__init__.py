@@ -7,7 +7,7 @@ app = Flask(__name__, static_folder='./public', template_folder='./static')
 #Configuration of application, see configuration.py, choose one and uncomment.
 #app.config.from_object('configuration.ProductionConfig')
 app.config.from_object('config.DevelopmentConfig')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////usr/src/app/application.db'
 
 #app.config.from_object('configuration.TestingConfig')
 

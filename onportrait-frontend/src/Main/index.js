@@ -10,7 +10,6 @@ class Main extends Component {
            <SimpleAppBar></SimpleAppBar>
            <ImageNav className="Main"></ImageNav>
        </dev>
-
    );
  }
 }

@@ -18,14 +18,13 @@ class FaceTagger extends Component {
       this.items = this.props.facetagger.map((item, key) =>
           <div className="Face-Tagger" style={{top: item.x, left: item.y,}} >
             <canvas id="myCanvas" width={item.width} height={item.height}></canvas>
-            {/*<input type="text" className="Input-Tagger"/>*/}
+            <input type="text" className="Input-Tagger"/>
             <NameForm />
           </div>
       );
       return (
           <span>
               {this.items}
-              <Image/>
           </span>);
     }
 }
